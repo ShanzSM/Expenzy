@@ -35,7 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     });
                   },
                   children: [
-                    FrontPage(),
+                    const FrontPage(),
                     SharedOnboardingScreen(
                       title: OnboardingData.onboardingDataList[0].title,
                       imagepath: OnboardingData.onboardingDataList[0].imagepath,
@@ -96,7 +96,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UserDataScreen(),
+                                    builder: (context) =>
+                                        const UserDataScreen(),
                                   ),
                                 );
                               },

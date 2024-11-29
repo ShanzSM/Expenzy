@@ -1,5 +1,7 @@
 import 'package:expenzy/constant/colors.dart';
 import 'package:expenzy/constant/constants.dart';
+import 'package:expenzy/screens/main_screen.dart';
+import 'package:expenzy/screens/user_services.dart';
 import 'package:expenzy/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +33,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -40,7 +43,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Enter Your \nPersonal Details",
                   style: TextStyle(
                     fontSize: 46,
@@ -48,7 +51,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
                 //form
@@ -65,17 +68,18 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           if (value!.isEmpty) {
                             return "please Enter Your Name";
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           hintText: "Enter your Name",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       TextFormField(
@@ -84,17 +88,18 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           if (value!.isEmpty) {
                             return "please Enter yout Email";
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           hintText: "Enter your Email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       TextFormField(
@@ -103,6 +108,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           if (value!.isEmpty) {
                             return "please Enter your Password";
                           }
+                          return null;
                         },
                         obscureText: true,
                         decoration: InputDecoration(
@@ -110,11 +116,11 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       TextFormField(
@@ -122,6 +128,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           if (value!.isEmpty) {
                             return "please Enter the Same password";
                           }
+                          return null;
                         },
                         controller: _confirmPasswordController,
                         obscureText: true,
@@ -130,16 +137,16 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             "Remember me for the next time",
                             style: TextStyle(
                                 fontSize: 16,
@@ -159,11 +166,11 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 80,
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             //form is valid ,process data
                             String username = _userNameController.text;
@@ -173,9 +180,27 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 _confirmPasswordController.text;
                             print(
                                 "$username $email $password $confirmpassword");
+                            //save the user name and email in the device storage
+                            await UserServices.storeUserDetails(
+                                username: username,
+                                email: email,
+                                password: password,
+                                confirmpassword: confirmpassword,
+                                context: context);
+                            //navigate to the main screen
+                            if (context.mounted) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return const MainScreen();
+                                  },
+                                ),
+                              );
+                            }
                           }
                         },
-                        child: CustomButton(
+                        child: const CustomButton(
                           buttonName: "Next",
                           buttonColor: kMainColor,
                         ),
