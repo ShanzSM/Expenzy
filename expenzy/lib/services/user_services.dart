@@ -39,4 +39,22 @@ class UserServices {
       err.toString();
     }
   }
+
+  //method to check weather the user name is saved in shared pref
+  static Future<bool> checkUserName() async {
+    //create a instance for shared pref
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString("username");
+    return username != null;
+  }
+
+  //get the username and the email
+  static Future<Map<String, String>> getUserData() async {
+    //create and instance fro shared pref
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    String? userName = pref.getString("username");
+    String? email = pref.getString("email");
+    return {"username": userName!, "email": email!};
+  }
 }
