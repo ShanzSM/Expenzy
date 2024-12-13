@@ -2,12 +2,17 @@ import 'package:expenzy/constant/colors.dart';
 import 'package:expenzy/constant/constants.dart';
 import 'package:expenzy/models/expense_model.dart';
 import 'package:expenzy/models/income_model.dart';
+import 'package:expenzy/services/expense_service.dart';
 import 'package:expenzy/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddNewScreen extends StatefulWidget {
-  const AddNewScreen({super.key});
+  final Function(Expense) addExpense;
+  const AddNewScreen({
+    super.key,
+    required this.addExpense,
+  });
 
   @override
   State<AddNewScreen> createState() => _AddNewScreenState();
@@ -368,7 +373,23 @@ class _AddNewScreenState extends State<AddNewScreen> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 2),
                             child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                //save expense and the income data in the shared pref
+                                List<Expense> loadedExpenses =
+                                    await ExpenceService().loadExpenses();
+                                //craete the expense to store
+                                Expense expense = Expense(
+                                  id: loadedExpenses.length + 1,
+                                  title: _titleController.text,
+                                  amount: _amountController.text.isEmpty
+                                      ? 0
+                                      : double.parse(_amountController.text),
+                                  category: _expenseCategory,
+                                  date: _selecteddate,
+                                  time: _selectedTime,
+                                  description: _descriptionController.text,
+                                );
+                                widget.addExpense(expense);
                                 setState(() {
                                   _selectedMethod = 0;
                                 });
