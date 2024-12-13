@@ -3,15 +3,18 @@ import 'package:expenzy/constant/constants.dart';
 import 'package:expenzy/models/expense_model.dart';
 import 'package:expenzy/models/income_model.dart';
 import 'package:expenzy/services/expense_service.dart';
+import 'package:expenzy/services/income_service.dart';
 import 'package:expenzy/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddNewScreen extends StatefulWidget {
   final Function(Expense) addExpense;
+  final Function(Income) addIncome;
   const AddNewScreen({
     super.key,
     required this.addExpense,
+    required this.addIncome,
   });
 
   @override
@@ -374,22 +377,46 @@ class _AddNewScreenState extends State<AddNewScreen> {
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 2),
                             child: GestureDetector(
                               onTap: () async {
-                                //save expense and the income data in the shared pref
-                                List<Expense> loadedExpenses =
-                                    await ExpenceService().loadExpenses();
-                                //craete the expense to store
-                                Expense expense = Expense(
-                                  id: loadedExpenses.length + 1,
-                                  title: _titleController.text,
-                                  amount: _amountController.text.isEmpty
-                                      ? 0
-                                      : double.parse(_amountController.text),
-                                  category: _expenseCategory,
-                                  date: _selecteddate,
-                                  time: _selectedTime,
-                                  description: _descriptionController.text,
-                                );
-                                widget.addExpense(expense);
+                                if (_selectedMethod == 0) {
+                                  //save expense and the income data in the shared pref
+                                  List<Expense> loadedExpenses =
+                                      await ExpenceService().loadExpenses();
+                                  //craete the expense to store
+                                  Expense expense = Expense(
+                                    id: loadedExpenses.length + 1,
+                                    title: _titleController.text,
+                                    amount: _amountController.text.isEmpty
+                                        ? 0
+                                        : double.parse(_amountController.text),
+                                    category: _expenseCategory,
+                                    date: _selecteddate,
+                                    time: _selectedTime,
+                                    description: _descriptionController.text,
+                                  );
+                                  widget.addExpense(expense);
+                                  //clear the fields
+                                  _amountController.clear();
+                                  _titleController.clear;
+                                  _descriptionController.clear;
+                                } else {
+                                  List<Income> loadedIncome =
+                                      await IncomeServices().loadIncomes();
+                                  //create the new income
+
+                                  Income income = Income(
+                                    id: loadedIncome.length + 1,
+                                    title: _titleController.text,
+                                    amount: _amountController.text.isEmpty
+                                        ? 0
+                                        : double.parse(_amountController.text),
+                                    category: _incomeCategory,
+                                    date: _selecteddate,
+                                    time: _selectedTime,
+                                    description: _descriptionController.text,
+                                  );
+                                  widget.addIncome(income);
+                                }
+
                                 setState(() {
                                   _selectedMethod = 0;
                                 });
