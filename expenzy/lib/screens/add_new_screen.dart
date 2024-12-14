@@ -415,6 +415,10 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                     description: _descriptionController.text,
                                   );
                                   widget.addIncome(income);
+                                  //clear the fields
+                                  _amountController.clear();
+                                  _titleController.clear;
+                                  _descriptionController.clear;
                                 }
 
                                 setState(() {
