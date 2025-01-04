@@ -1,5 +1,4 @@
 import 'package:expenzy/constant/colors.dart';
-import 'package:expenzy/models/expense_model.dart';
 import 'package:expenzy/models/income_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
