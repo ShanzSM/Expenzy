@@ -1,22 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:expenzy/constant/colors.dart';
 import 'package:expenzy/constant/constants.dart';
+import 'package:expenzy/models/expense_model.dart';
+import 'package:expenzy/models/income_model.dart';
 import 'package:expenzy/services/user_services.dart';
+import 'package:expenzy/widgets/expense_card.dart';
+import 'package:expenzy/widgets/income_card.dart';
 import 'package:expenzy/widgets/income_expence_card.dart';
-import 'package:flutter/material.dart';
+import 'package:expenzy/widgets/line_chart.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final List<Expense> expenseList;
+  final List<Income> incomeList;
+
+  const HomeScreen({
+    super.key,
+    required this.expenseList,
+    required this.incomeList,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //for store the username
   String username = "";
+  double expensetotal = 0;
+  double incometotal = 0;
+
+  List<dynamic> recentTransactions = [];
+
   @override
   void initState() {
-    //get usrname from the shared pref
+    super.initState();
+
+    // Get username from shared preferences
     UserServices.getUserData().then(
       (value) {
         if (value["username"] != null) {
@@ -26,7 +44,35 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
     );
-    super.initState();
+
+    // Calculate totals and prepare recent transactions
+    setState(() {
+      expensetotal =
+          widget.expenseList.fold(0, (sum, expense) => sum + expense.amount);
+      incometotal =
+          widget.incomeList.fold(0, (sum, income) => sum + income.amount);
+
+      // Combine and sort transactions by date and time
+      recentTransactions = [
+        ...widget.expenseList.map((expense) => {
+              "type": "expense",
+              "data": expense,
+            }),
+        ...widget.incomeList.map((income) => {
+              "type": "income",
+              "data": income,
+            })
+      ];
+      recentTransactions.sort((a, b) {
+        final dateA = a["data"].date;
+        final dateB = b["data"].date;
+        final timeA = a["data"].time;
+        final timeB = b["data"].time;
+        return dateB.compareTo(dateA) != 0
+            ? dateB.compareTo(dateA)
+            : timeB.compareTo(timeA);
+      });
+    });
   }
 
   @override
@@ -36,88 +82,132 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Column(
-                children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    decoration: BoxDecoration(
-                      color: kMainColor.withOpacity(0.30),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kDefalutPadding),
-                      child: Column(
+              // Header Section
+              Container(
+                height: MediaQuery.of(context).size.height * 0.27,
+                decoration: BoxDecoration(
+                  color: kMainColor.withOpacity(0.15),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(kDefalutPadding),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: kMainColor,
-                                    border:
-                                        Border.all(color: kMainColor, width: 3),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Image.asset(
-                                      "assets/images/user.jpg",
-                                      fit: BoxFit.cover,
-                                      width: 50,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "welcome $username",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.notifications,
-                                  color: kMainColor,
-                                  size: 30,
-                                ),
-                              ),
-                            ],
+                          // User profile
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                const AssetImage("assets/images/user.jpg"),
                           ),
-                          SizedBox(
-                            height: 20,
+                          Text(
+                            " $username",
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.w500),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IncomeExpenceCard(
-                                  title: "Income",
-                                  amount: 200,
-                                  imageUrl: "assets/images/income.png",
-                                  bgcolor: kGreen),
-                              IncomeExpenceCard(
-                                  title: "Expenses",
-                                  amount: 5000,
-                                  imageUrl: "assets/images/expense.png",
-                                  bgcolor: kRed),
-                            ],
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.notifications,
+                              color: kMainColor,
+                              size: 30,
+                            ),
                           ),
                         ],
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                      // Income and Expense Summary
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IncomeExpenceCard(
+                            title: "Income",
+                            amount: incometotal,
+                            imageUrl: "assets/images/income.png",
+                            bgcolor: kGreen,
+                          ),
+                          IncomeExpenceCard(
+                            title: "Expenses",
+                            amount: expensetotal,
+                            imageUrl: "assets/images/expense.png",
+                            bgcolor: kRed,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ),
+              // Spend Frequency Section
+              Padding(
+                padding: const EdgeInsets.all(kDefalutPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Spend Frequency",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    LineChartSample(),
+                  ],
+                ),
+              ),
+              // Recent Transactions Section
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefalutPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Recent Transactions",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      reverse: false,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: recentTransactions.length,
+                      itemBuilder: (context, index) {
+                        final transaction = recentTransactions[index];
+                        if (transaction["type"] == "expense") {
+                          final expense = transaction["data"];
+                          return ExpenseCard(
+                            title: expense.title,
+                            description: expense.description,
+                            amount: expense.amount,
+                            category: expense.category,
+                            date: expense.date,
+                            time: expense.time,
+                          );
+                        } else {
+                          final income = transaction["data"];
+                          return IncomeCard(
+                            title: income.title,
+                            description: income.description,
+                            amount: income.amount,
+                            category: income.category,
+                            date: income.date,
+                            time: income.time,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

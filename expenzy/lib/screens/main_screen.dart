@@ -84,19 +84,22 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     //screen list
     final List<Widget> pages = [
+      HomeScreen(
+        expenseList: expenseList,
+        incomeList: incomeList,
+      ),
+      AddNewScreen(
+        addExpense: addNewExpense,
+        addIncome: addNewIncome,
+      ),
       TransactionScreen(
         expensesList: expenseList,
         incomesList: incomeList,
         onDismissedExpense: removeExpense,
         onDismissedIncome: removeIncome,
       ),
-      HomeScreen(),
-      AddNewScreen(
-        addExpense: addNewExpense,
-        addIncome: addNewIncome,
-      ),
-      BudgetScreen(),
-      profileScreen(),
+      const BudgetScreen(),
+      const profileScreen(),
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -112,15 +115,15 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         selectedLabelStyle:
-            TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
         items: [
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
             ),
             label: "Home",
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.list_rounded,
             ),
@@ -128,10 +131,10 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Container(
-              padding: EdgeInsets.all(10),
-              decoration:
-                  BoxDecoration(color: kMainColor, shape: BoxShape.circle),
-              child: Icon(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  color: kMainColor, shape: BoxShape.circle),
+              child: const Icon(
                 Icons.add,
                 color: kWhite,
                 size: 30,
@@ -139,13 +142,13 @@ class _MainScreenState extends State<MainScreen> {
             ),
             label: "Home",
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.rocket,
             ),
             label: "Budget",
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
             ),

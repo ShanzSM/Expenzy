@@ -115,7 +115,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "How Much?",
                           style: TextStyle(
                               fontSize: 20,
@@ -123,6 +123,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               fontWeight: FontWeight.w500),
                         ),
                         TextField(
+                          controller: _amountController,
                           style: const TextStyle(
                             fontSize: 60,
                             fontWeight: FontWeight.bold,
@@ -195,8 +196,8 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                   vertical: 10, horizontal: 15),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
+                          const SizedBox(
+                            height: 10,
                           ),
                           TextFormField(
                             controller: _titleController,
@@ -205,14 +206,14 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(100),
                               ),
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5,
                                 horizontal: 15,
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
+                          const SizedBox(
+                            height: 10,
                           ),
                           TextFormField(
                             controller: _descriptionController,
@@ -221,14 +222,14 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(100),
                               ),
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5,
                                 horizontal: 15,
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
+                          const SizedBox(
+                            height: 10,
                           ),
                           TextFormField(
                             controller: _amountController,
@@ -238,14 +239,14 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(100),
                               ),
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 5,
                                 horizontal: 15,
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
+                          const SizedBox(
+                            height: 10,
                           ),
                           // date and time picker button
                           //date picker
@@ -273,9 +274,9 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(100),
                                       color: kMainColor),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -296,7 +297,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               ),
                               Text(
                                 DateFormat.yMMMd().format(_selecteddate),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: kGrey,
                                   fontWeight: FontWeight.w500,
@@ -304,8 +305,8 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               ),
                             ],
                           ), // Time picker
-                          SizedBox(
-                            height: 20,
+                          const SizedBox(
+                            height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -335,9 +336,9 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(100),
                                       color: kYellow),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
@@ -360,7 +361,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                                 DateFormat.jm().format(
                                   _selectedTime,
                                 ),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: kGrey,
                                   fontWeight: FontWeight.w500,
@@ -374,7 +375,7 @@ class _AddNewScreenState extends State<AddNewScreen> {
                             thickness: 3,
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 2),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 2, 1),
                             child: GestureDetector(
                               onTap: () async {
                                 if (_selectedMethod == 0) {
