@@ -63,7 +63,7 @@ class IncomeCard extends StatelessWidget {
                     fontSize: 20, fontWeight: FontWeight.bold, color: kBlack),
               ),
               SizedBox(
-                width: 150,
+                width: 80,
                 child: Text(
                   description,
                   style: TextStyle(
