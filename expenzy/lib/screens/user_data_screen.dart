@@ -148,7 +148,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 15),
                       // Next Button
                       GestureDetector(
                         onTap: () async {
