@@ -24,8 +24,8 @@ class AddNewScreen extends StatefulWidget {
 class _AddNewScreenState extends State<AddNewScreen> {
   int _selectedMethod = 0;
 
-  ExpenseCategory _expenseCategory = ExpenseCategory.food;
-  IncomeCategory _incomeCategory = IncomeCategory.salary;
+  ExpenseCategory _expenseCategory = ExpenseCategory.Food;
+  IncomeCategory _incomeCategory = IncomeCategory.Salary;
   DateTime _selecteddate = DateTime.now();
   DateTime _selectedTime = DateTime.now();
 //text controllers
@@ -413,54 +413,58 @@ class _AddNewScreenState extends State<AddNewScreen> {
                               onTap: () async {
                                 if (_formkey.currentState!.validate()) {
                                   if (_selectedMethod == 0) {
-                                    //save expense and the income data in the shared pref
+                                    // Save expense data
                                     List<Expense> loadedExpenses =
                                         await ExpenceService().loadExpenses();
-                                    //craete the expense to store
+
+                                    // Create the expense to store
                                     Expense expense = Expense(
                                       id: loadedExpenses.length + 1,
                                       title: _titleController.text,
-                                      amount: _amountController.text.isEmpty
-                                          ? 0
-                                          : double.parse(
-                                              _amountController.text),
+                                      amount:
+                                          double.parse(_amountController.text),
                                       category: _expenseCategory,
                                       date: _selecteddate,
                                       time: _selectedTime,
                                       description: _descriptionController.text,
                                     );
+
                                     widget.addExpense(expense);
-                                    //clear the fields
+
+                                    // Clear the fields
                                     _amountController.clear();
-                                    _titleController.clear;
-                                    _descriptionController.clear;
+                                    _titleController.clear();
+                                    _descriptionController.clear();
+                                  } else if (_selectedMethod == 1) {
+                                    // Save income data
+                                    List<Income> loadedIncome =
+                                        await IncomeServices().loadIncomes();
+
+                                    // Create the new income
+                                    Income income = Income(
+                                      id: loadedIncome.length + 1,
+                                      title: _titleController.text,
+                                      amount:
+                                          double.parse(_amountController.text),
+                                      category: _incomeCategory,
+                                      date: _selecteddate,
+                                      time: _selectedTime,
+                                      description: _descriptionController.text,
+                                    );
+
+                                    widget.addIncome(income);
+
+                                    // Clear the fields
+                                    _amountController.clear();
+                                    _titleController.clear();
+                                    _descriptionController.clear();
                                   }
-                                } else {
-                                  List<Income> loadedIncome =
-                                      await IncomeServices().loadIncomes();
-                                  //create the new income
 
-                                  Income income = Income(
-                                    id: loadedIncome.length + 1,
-                                    title: _titleController.text,
-                                    amount: _amountController.text.isEmpty
-                                        ? 0
-                                        : double.parse(_amountController.text),
-                                    category: _incomeCategory,
-                                    date: _selecteddate,
-                                    time: _selectedTime,
-                                    description: _descriptionController.text,
-                                  );
-                                  widget.addIncome(income);
-                                  //clear the fields
-                                  _amountController.clear();
-                                  _titleController.clear;
-                                  _descriptionController.clear;
+                                  // Reset to default method
+                                  setState(() {
+                                    _selectedMethod = 0;
+                                  });
                                 }
-
-                                setState(() {
-                                  _selectedMethod = 0;
-                                });
                               },
                               child: CustomButton(
                                 buttonName: "Add",

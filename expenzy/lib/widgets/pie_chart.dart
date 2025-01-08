@@ -5,84 +5,45 @@ import 'package:expenzy/models/income_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class chart extends StatefulWidget {
+class Chart extends StatefulWidget {
   final Map<ExpenseCategory, double> expensecategoryTotals;
   final Map<IncomeCategory, double> incomecategoryTotals;
   final bool isExpense;
-  const chart(
-      {super.key,
-      required this.expensecategoryTotals,
-      required this.incomecategoryTotals,
-      required this.isExpense});
+  final double percentage;
+
+  const Chart({
+    super.key,
+    required this.expensecategoryTotals,
+    required this.incomecategoryTotals,
+    required this.isExpense,
+    required this.percentage,
+  });
 
   @override
-  State<chart> createState() => _chartState();
+  State<Chart> createState() => _ChartState();
 }
 
-class _chartState extends State<chart> {
-  //section data
+class _ChartState extends State<Chart> {
+  // Get sections for pie chart
   List<PieChartSectionData> getSection() {
     if (widget.isExpense) {
-      return [
-        PieChartSectionData(
-          color: expenseCategoryColors[ExpenseCategory.food],
-          value: widget.expensecategoryTotals[ExpenseCategory.food] ?? 0,
+      return widget.expensecategoryTotals.entries.map((entry) {
+        return PieChartSectionData(
+          color: expenseCategoryColors[entry.key],
+          value: entry.value,
           showTitle: false,
           radius: 60,
-        ),
-        PieChartSectionData(
-          color: expenseCategoryColors[ExpenseCategory.health],
-          value: widget.expensecategoryTotals[ExpenseCategory.health] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-        PieChartSectionData(
-          color: expenseCategoryColors[ExpenseCategory.shopping],
-          value: widget.expensecategoryTotals[ExpenseCategory.shopping] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-        PieChartSectionData(
-          color: expenseCategoryColors[ExpenseCategory.subscription],
-          value:
-              widget.expensecategoryTotals[ExpenseCategory.subscription] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-        PieChartSectionData(
-          color: expenseCategoryColors[ExpenseCategory.transport],
-          value: widget.expensecategoryTotals[ExpenseCategory.transport] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-      ];
+        );
+      }).toList();
     } else {
-      return [
-        PieChartSectionData(
-          color: incomeCategoryColors[IncomeCategory.freelance],
-          value: widget.incomecategoryTotals[IncomeCategory.freelance] ?? 0,
+      return widget.incomecategoryTotals.entries.map((entry) {
+        return PieChartSectionData(
+          color: incomeCategoryColors[entry.key],
+          value: entry.value,
           showTitle: false,
           radius: 60,
-        ),
-        PieChartSectionData(
-          color: incomeCategoryColors[IncomeCategory.passive],
-          value: widget.incomecategoryTotals[IncomeCategory.passive] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-        PieChartSectionData(
-          color: incomeCategoryColors[IncomeCategory.salary],
-          value: widget.incomecategoryTotals[IncomeCategory.salary] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-        PieChartSectionData(
-          color: incomeCategoryColors[IncomeCategory.sales],
-          value: widget.incomecategoryTotals[IncomeCategory.sales] ?? 0,
-          showTitle: false,
-          radius: 60,
-        ),
-      ];
+        );
+      }).toList();
     }
   }
 
@@ -110,15 +71,13 @@ class _chartState extends State<chart> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "70%",
+                "${widget.percentage.toStringAsFixed(1)}%",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: kBlack,
                 ),
               ),
-              SizedBox(
-                height: 8,
-              ),
+              SizedBox(height: 8),
               Text(
                 "of 100%",
                 style: TextStyle(
@@ -127,7 +86,7 @@ class _chartState extends State<chart> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

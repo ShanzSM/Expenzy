@@ -83,11 +83,13 @@ class _MainScreenState extends State<MainScreen> {
   //category total expenses
   Map<ExpenseCategory, double> calculateExpenseCategories() {
     Map<ExpenseCategory, double> categoryTotals = {
-      ExpenseCategory.food: 0,
-      ExpenseCategory.health: 0,
-      ExpenseCategory.shopping: 0,
-      ExpenseCategory.subscription: 0,
-      ExpenseCategory.transport: 0,
+      ExpenseCategory.Food: 0,
+      ExpenseCategory.Health: 0,
+      ExpenseCategory.Shopping: 0,
+      ExpenseCategory.Subscription: 0,
+      ExpenseCategory.Transport: 0,
+      ExpenseCategory.Alchohol: 0,
+      ExpenseCategory.Smoke: 0,
     };
     for (Expense expense in expenseList) {
       categoryTotals[expense.category] =
@@ -99,10 +101,10 @@ class _MainScreenState extends State<MainScreen> {
   //category total incomes
   Map<IncomeCategory, double> calculateIncomeCategories() {
     Map<IncomeCategory, double> categoryTotals = {
-      IncomeCategory.freelance: 0,
-      IncomeCategory.passive: 0,
-      IncomeCategory.salary: 0,
-      IncomeCategory.sales: 0,
+      IncomeCategory.Freelance: 0,
+      IncomeCategory.Passive: 0,
+      IncomeCategory.Salary: 0,
+      IncomeCategory.Sales: 0,
     };
     for (Income income in incomeList) {
       categoryTotals[income.category] =

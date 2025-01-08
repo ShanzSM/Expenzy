@@ -2,29 +2,35 @@ import 'package:flutter/material.dart';
 
 //input category enum
 enum ExpenseCategory {
-  food,
-  transport,
-  health,
-  shopping,
-  subscription,
+  Food,
+  Transport,
+  Health,
+  Shopping,
+  Subscription,
+  Alchohol,
+  Smoke,
 }
 
 //category images
 final Map<ExpenseCategory, String> expenseCategoryImages = {
-  ExpenseCategory.food: "assets/images/restaurant.png",
-  ExpenseCategory.transport: "assets/images/car.png",
-  ExpenseCategory.health: "assets/images/health.png",
-  ExpenseCategory.shopping: "assets/images/bag.png",
-  ExpenseCategory.subscription: "assets/images/bill.png",
+  ExpenseCategory.Food: "assets/images/restaurant.png",
+  ExpenseCategory.Transport: "assets/images/car.png",
+  ExpenseCategory.Health: "assets/images/health.png",
+  ExpenseCategory.Shopping: "assets/images/bag.png",
+  ExpenseCategory.Subscription: "assets/images/bill.png",
+  ExpenseCategory.Alchohol: "assets/images/drink.png",
+  ExpenseCategory.Smoke: "assets/images/smoke.png",
 };
 
 //category colors
 final Map<ExpenseCategory, Color> expenseCategoryColors = {
-  ExpenseCategory.food: const Color(0xFFE57373),
-  ExpenseCategory.transport: const Color(0xFF81C784),
-  ExpenseCategory.health: const Color(0xFF64B5F6),
-  ExpenseCategory.shopping: const Color(0xFFFFD54F),
-  ExpenseCategory.subscription: const Color(0xFF9575CD),
+  ExpenseCategory.Food: const Color(0xFFE57373),
+  ExpenseCategory.Transport: const Color(0xFF81C784),
+  ExpenseCategory.Health: const Color(0xFF64B5F6),
+  ExpenseCategory.Shopping: const Color(0xFFFFD54F),
+  ExpenseCategory.Subscription: const Color(0xFF9575CD),
+  ExpenseCategory.Alchohol: const Color(0xFFFFA726),
+  ExpenseCategory.Smoke: const Color(0xFF689F38),
 };
 
 class Expense {
