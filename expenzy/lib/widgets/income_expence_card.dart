@@ -7,12 +7,13 @@ class IncomeExpenceCard extends StatefulWidget {
   final double amount;
   final String imageUrl;
   final Color bgcolor;
-  const IncomeExpenceCard(
-      {super.key,
-      required this.title,
-      required this.amount,
-      required this.imageUrl,
-      required this.bgcolor});
+  const IncomeExpenceCard({
+    super.key,
+    required this.title,
+    required this.amount,
+    required this.imageUrl,
+    required this.bgcolor,
+  });
 
   @override
   State<IncomeExpenceCard> createState() => _IncomeExpenceCardState();
