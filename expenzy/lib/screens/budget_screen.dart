@@ -3,6 +3,7 @@ import 'package:expenzy/constant/constants.dart';
 import 'package:expenzy/models/expense_model.dart';
 import 'package:expenzy/models/income_model.dart';
 import 'package:expenzy/widgets/category_card.dart';
+
 import 'package:expenzy/widgets/pie_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,17 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetScreenState extends State<BudgetScreen> {
   int _selected = 0;
 
-  //methode to find the category color from the category
+  // Calculate percentage dynamically
+  double calculatePercentage() {
+    final data = _selected == 0
+        ? widget.expenseCategoryTotals
+        : widget.incomeCategoryTotals;
+    final totalAmount = data.values.reduce((a, b) => a + b);
+    final totalBudget = 100.0; // Assuming 100 as the maximum percentage
+    return (totalAmount / totalBudget) * 100;
+  }
+
+  // Get category color based on type
   Color getCategoryColor(dynamic category) {
     if (category is ExpenseCategory) {
       return expenseCategoryColors[category]!;
@@ -133,10 +144,11 @@ class _BudgetScreenState extends State<BudgetScreen> {
               ),
               const SizedBox(height: 20),
               // Pie chart
-              chart(
+              Chart(
                 expensecategoryTotals: widget.expenseCategoryTotals,
                 incomecategoryTotals: widget.incomeCategoryTotals,
                 isExpense: _selected == 0,
+                percentage: calculatePercentage(),
               ),
               const SizedBox(height: 50),
               // List of categories
