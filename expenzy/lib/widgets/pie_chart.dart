@@ -9,14 +9,12 @@ class Chart extends StatefulWidget {
   final Map<ExpenseCategory, double> expensecategoryTotals;
   final Map<IncomeCategory, double> incomecategoryTotals;
   final bool isExpense;
-  final double percentage;
 
   const Chart({
     super.key,
     required this.expensecategoryTotals,
     required this.incomecategoryTotals,
     required this.isExpense,
-    required this.percentage,
   });
 
   @override
@@ -24,6 +22,26 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> {
+  // Calculate total income
+  double getTotalIncome() {
+    return widget.incomecategoryTotals.values
+        .fold(0, (sum, value) => sum + value);
+  }
+
+  // Calculate total expense
+  double getTotalExpense() {
+    return widget.expensecategoryTotals.values
+        .fold(0, (sum, value) => sum + value);
+  }
+
+  // Calculate rest (total Income - total Expense)
+  String getRestValue() {
+    double totalIncome = getTotalIncome();
+    double totalExpense = getTotalExpense();
+    double rest = totalIncome - totalExpense;
+    return "RS. ${rest.toStringAsFixed(2)}"; // Adjust the formatting as needed
+  }
+
   // Get sections for pie chart
   List<PieChartSectionData> getSection() {
     if (widget.isExpense) {
@@ -71,18 +89,22 @@ class _ChartState extends State<Chart> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "${widget.percentage.toStringAsFixed(1)}%",
+                getRestValue(), // Displaying the rest value here
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: kBlack,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
-                "of 100%",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: kGrey,
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "Remaining \nBalance",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: kGrey,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

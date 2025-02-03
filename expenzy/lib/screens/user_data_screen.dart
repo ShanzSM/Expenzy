@@ -49,7 +49,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 20),
                 Form(
                   key: _formKey,
                   child: Column(

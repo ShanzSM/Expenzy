@@ -148,7 +148,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 expensecategoryTotals: widget.expenseCategoryTotals,
                 incomecategoryTotals: widget.incomeCategoryTotals,
                 isExpense: _selected == 0,
-                percentage: calculatePercentage(),
               ),
               const SizedBox(height: 50),
               // List of categories
